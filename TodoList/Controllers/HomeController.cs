@@ -20,8 +20,21 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var todoItems = _listManager.GetTodoItems();
-        return View(new TodoListViewModel() { Items = todoItems });
+        return View(new TodoListViewModel() { Items = todoItems.Select(it => new Item()
+        {
+            Id = it.Id,
+            Text = it.Text,
+            IsCompleted = it.IsCompleted
+        }) });
     }
+    
+    //Add
+    [HttpGet]
+    public IActionResult Add()
+    {
+        return View("Add");
+    }
+    [HttpPost]
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -1,9 +1,62 @@
 ﻿@model TodoList.Models.TodoListViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Todo List";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+
+    <h2 class="mb-3">📌 Todo List</h2>
+
+    <!-- Form thêm mới -->
+    <form asp-action="Add" method="post" class="d-flex gap-2 mb-4" href="Add">
+        <input class="form-control" type="text" name="Text" placeholder="Enter a task..." required />
+        <button class="btn btn-primary" type="submit">➕ Add</button>
+    </form>
+
+    @if (Model.Items != null && Model.Items.Any())
+    {
+        <ul class="list-group">
+            @foreach (var item in Model.Items)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <!-- Checkbox complete -->
+                        <input type="checkbox"
+                               onchange="location.href='@Url.Action("MarkComplete", new { id = item.Id })'"
+                               @(item.IsCompleted ? "checked" : "") />
+
+                        <span class="ms-2 @(item.IsCompleted ? "text-decoration-line-through text-muted" : "")">
+                            @item.Text
+                        </span>
+                    </div>
+
+                    <!-- Group nút hành động -->
+                    <div class="btn-group">
+
+                        <!-- Edit -->
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-warning">
+                            ✏ Edit
+                        </a>
+
+                        <!-- Delete -->
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-danger">
+                            🗑 Delete
+                        </a>
+
+                    </div>
+
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No items yet. Add something!</p>
+    }
+
 </div>
