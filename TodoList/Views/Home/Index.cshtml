@@ -7,11 +7,10 @@
 
     <h2 class="mb-3">📌 Todo List</h2>
 
-    <!-- Form thêm mới -->
-    <form asp-action="Add" method="post" class="d-flex gap-2 mb-4" href="Add">
-        <input class="form-control" type="text" name="Text" placeholder="Enter a task..." required />
-        <button class="btn btn-primary" type="submit">➕ Add</button>
-    </form>
+    <!--Action chuyển sang form thêm mới -->
+    <div class="d-flex gap-2 mb-4">
+        <a href="/Home/Add" class="btn btn-primary">➕ Add</a>
+    </div>
 
     @if (Model.Items != null && Model.Items.Any())
     {
@@ -35,18 +34,16 @@
                     <div class="btn-group">
 
                         <!-- Edit -->
-                        <a asp-action="Edit"
-                           asp-route-id="@item.Id"
+                        <a href="/Home/Edit/@item.Id"
                            class="btn btn-sm btn-warning">
                             ✏ Edit
                         </a>
 
-                        <!-- Delete -->
-                        <a asp-action="Delete"
-                           asp-route-id="@item.Id"
-                           class="btn btn-sm btn-danger">
-                            🗑 Delete
-                        </a>
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">🗑 Delete</button>
+                        </form>
 
                     </div>
 

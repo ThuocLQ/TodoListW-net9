@@ -20,6 +20,11 @@ public class TodoListManager
    {
       repository.AddTodoItem(todoItem);
    }
+
+   public void UpdateTodoItem(TodoItem todoItem)
+   {
+      repository.UpdateTodoItem(todoItem);
+   }
 //Mark
    public void MarkComplete(int id)
    {
