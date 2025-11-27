@@ -6,7 +6,7 @@ namespace Infratructure;
 public class InmemoryTodoItemRepository : ITodoItemRepository
 {
     private readonly List<TodoItem> _items;
-
+    private int _nextId = 1;
     public InmemoryTodoItemRepository()
     {
         _items = [];
@@ -21,12 +21,13 @@ public class InmemoryTodoItemRepository : ITodoItemRepository
     {
         return _items.FirstOrDefault(i => i.Id == id);
     }
-
+    
     public void AddTodoItem(TodoItem item)
-    {
+    { 
+        item.Id = _nextId++;
         _items.Add(item);
     }
-
+    
     public void DeleteTodoItem(int id)
     {
         var item = _items.FirstOrDefault(i => i.Id == id);
@@ -35,15 +36,15 @@ public class InmemoryTodoItemRepository : ITodoItemRepository
             _items.Remove(item);
         }
     }
-
+    
     public void UpdateTodoItem(TodoItem? item)
     {
         var existingItem = _items.FirstOrDefault(i => i.Id == item.Id);
         if (existingItem != null)
         {
-            existingItem.Id = item.Id;
-            existingItem.Text = item.Text;
+            existingItem.Text = item.Text ?? existingItem.Text;
             existingItem.IsCompleted = item.IsCompleted;
         }
     }
+
 }

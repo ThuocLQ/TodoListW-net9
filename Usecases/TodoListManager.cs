@@ -15,26 +15,29 @@ public class TodoListManager
    {
       return repository.GetItems();
    }
+   
 //Add
    public void AddTodoItem(TodoItem todoItem)
    {
       repository.AddTodoItem(todoItem);
    }
-
+   
+//Update   
    public void UpdateTodoItem(TodoItem todoItem)
    {
       repository.UpdateTodoItem(todoItem);
    }
+   
 //Mark
    public void MarkComplete(int id)
    {
       var item = repository.GetByID(id);
-      if (item != null)
-      {
-         item.IsCompleted = true;
-      }
+      if (item == null)
+         return;
+      item.IsCompleted = !item.IsCompleted;
       repository.UpdateTodoItem(item);
    }
+
 //Delete
    public void DeleteTodoItem (int id)
    {

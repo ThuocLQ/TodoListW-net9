@@ -25,7 +25,7 @@ public class HomeController : Controller
         {
             Id = it.Id,
             Text = it.Text,
-            IsCompleted = false
+            IsCompleted = it.IsCompleted
         }) });
     }
     
@@ -41,7 +41,8 @@ public class HomeController : Controller
         _listManager.AddTodoItem(new TodoItem(){Id =  item.Id, Text = item.Text, IsCompleted = item.IsCompleted});
         return RedirectToAction("Index");
     }
-    //edit
+    
+    //Edit
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -63,7 +64,8 @@ public class HomeController : Controller
 
         return RedirectToAction("Index");
     }
-    //delete
+    
+    //Delete
     [HttpPost]
     public IActionResult Delete(int id)
     {
@@ -74,7 +76,7 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
     
-    //markcompleted
+    //Mark complete
     [HttpPost]
     public IActionResult MarkComplete(int id)
     {
