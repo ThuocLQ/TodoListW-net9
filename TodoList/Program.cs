@@ -2,8 +2,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ITodoItemRepository, InmemoryTodoItemRepository>();
-builder.Services.AddTransient<TodoListManager>();
+//builder.Services.AddSingleton<ITodoItemRepository, InmemoryTodoItemRepository>();
+//builder.Services.AddTransient<TodoListManager>();
+
+// PostgreSQL connection string
+var connStr = builder.Configuration.GetConnectionString("Postgres");
+
+// EF DbContext
+builder.Services.AddDbContext<TodoDbContext>(options =>
+    options.UseNpgsql(connStr));
+
+// DI repository
+builder.Services.AddScoped<ITodoItemRepository, EfTodoItemRepository>();
+builder.Services.AddScoped<TodoListManager>();
 
 var app = builder.Build();
 

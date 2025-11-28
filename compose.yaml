@@ -1,0 +1,32 @@
+﻿version: '3.9'
+services:
+  postgres:
+    image: postgres:16
+    container_name: todo_pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres281125
+      TZ: Asia/Ho_Chi_Minh         # ✅ Thêm timezone
+    ports:
+      - "5432:5432"
+    volumes:
+      - todo-data:/var/lib/postgresql/data
+    restart: always
+
+  todolist:
+    build:
+      context: .
+      dockerfile: TodoList/Dockerfile
+    container_name: todo_simple
+    depends_on:
+      - postgres
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=postgres281125;Username=postgres;Password=postgres"
+    ports:
+      - "8080:8080"
+    restart: always
+
+volumes:
+  todo-data:
